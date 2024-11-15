@@ -10,11 +10,11 @@ COMSC 210 | Lab 32 | Skylar Robinson | IDE Used: Eclipse
 #include "Car.h"
 using namespace std;
 
-void carJoin(deque<Car>);
-void carPay(deque<Car>);
+void carJoin(deque<Car>&);
+void carPay(deque<Car>&);
 void dispQueue(deque<Car>);
 
-const int PY_PR = 55, JN_PR = 45, ICARS = 2;
+const int PY_PR = 55, ICARS = 2;
 
 int main(){
 	srand(time(0));
@@ -28,8 +28,40 @@ int main(){
 
 	//display initial queue
 	cout << "Initial queue:\n";
-	for (Car c : line)
+	for (Car c : line) {
+		cout << "\t";
 		c.print();
+	}
+
+	carPay(line);
+
+	dispQueue(line);
+
+	carJoin(line);
+
+	dispQueue(line);
 
 	return 0;
+}
+
+void carJoin(deque<Car> &q) {
+	cout << "Operation: Joined lane: ";
+	Car temp;
+	temp.print();
+	q.push_back(temp);
+
+}
+
+void carPay(deque<Car> &q) {
+	cout << "Operation: Car paid: ";
+	q.front().print();
+	q.pop_front();
+}
+
+void dispQueue(deque<Car> q) {
+	cout << "Queue:\n";
+	for (Car c : q) {
+		cout << "\t";
+		c.print();
+	}
 }
