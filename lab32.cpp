@@ -13,6 +13,7 @@ using namespace std;
 void carJoin(deque<Car>&);
 void carPay(deque<Car>&);
 void dispQueue(deque<Car>);
+int prob();
 
 const int PY_PR = 55, ICARS = 2;
 
@@ -32,14 +33,19 @@ int main(){
 		cout << "\t";
 		c.print();
 	}
+	cout << endl;
 
-	carPay(line);
-
-	dispQueue(line);
-
-	carJoin(line);
-
-	dispQueue(line);
+	int count = 1;
+	while (!line.empty()) {
+		cout << "Time: " << count << " ";
+		if (prob() <= PY_PR)
+			carPay(line);
+		else
+			carJoin(line);
+		dispQueue(line);
+		cout << endl;
+		count++;
+	}
 
 	return 0;
 }
@@ -60,8 +66,15 @@ void carPay(deque<Car> &q) {
 
 void dispQueue(deque<Car> q) {
 	cout << "Queue:\n";
-	for (Car c : q) {
-		cout << "\t";
-		c.print();
-	}
+	if (q.empty())
+		cout << "\tEmpty";
+	else
+	    for (Car c : q) {
+		    cout << "\t";
+		    c.print();
+	    }
+}
+
+int prob() {
+	return (rand() % 100) + 1;
 }
