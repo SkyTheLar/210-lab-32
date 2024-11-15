@@ -11,7 +11,7 @@ COMSC 210 | Lab 32 | Skylar Robinson | IDE Used: Eclipse
 #include "Car.h"
 using namespace std;
 
-const int PY_PR = 55, ICARS = 2, LANES = 4;
+const int PY_PR = 46, JN_PR = 39, JNEM_PR = 50, ICARS = 2, LANES = 4, TIMES = 20;
 
 void carJoin(deque<Car>&);
 void carPay(deque<Car>&);
@@ -44,9 +44,10 @@ int main(){
 	}
 	cout << endl;
 
-	carSwitch(plaza, 3);
+	//simulation
+	for (int i = 0; i < TIMES; i++) {
 
-	dispPlaza(plaza);
+	}
 
 	return 0;
 }
@@ -67,13 +68,14 @@ void carPay(deque<Car> &q) {
 
 void carSwitch(array<deque<Car>, LANES> &a, int i) {
 	cout << "Operation: Car switched: ";
-	a[i - 1].back().print();
+	a[i].back().print();
+	a[laneNot(i)].push_back(a[i].back());
+	a[i].pop_back();
 }
 
 void dispQueue(deque<Car> q) {
-	cout << "Queue:";
 	if (q.empty())
-		cout << " empty";
+		cout << " empty\n";
 	else {
 		cout << endl;
 	    for (Car c : q) {
@@ -85,11 +87,8 @@ void dispQueue(deque<Car> q) {
 
 void dispPlaza(array<deque<Car>, LANES> a) {
 	for (int i = 0; i < LANES; i++) {
-		cout << "Lane " << i + 1 << " Queue:\n";
-		for (Car c : a[i]) {
-			cout << "\t";
-			c.print();
-		}
+		cout << "Lane " << i + 1 << " Queue:";
+		dispQueue(a[i]);
 	}
 }
 
@@ -98,8 +97,8 @@ int prob() {
 }
 
 int laneNot(int l) {
-	int temp = (rand() % LANES) + 1;
-	while (temp = l)
-		temp = (rand() % LANES) + 1;
+	int temp = (rand() % LANES);
+	while (temp == l)
+		temp = (rand() % LANES);
 	return temp;
 }
