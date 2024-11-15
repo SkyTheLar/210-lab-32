@@ -45,15 +45,27 @@ int main(){
 	cout << endl;
 
 	//simulation
-	for (int i = 0; i < TIMES; i++) {
-
+	for (int c = 0; c < TIMES; c++) {
+		cout << "Time: " << c + 1 << endl;
+		for (int i = 0; i < LANES && !plaza[i].empty(); i++) {
+			cout << "Lane: " << i + 1 << " ";
+			int pr = prob();
+			if (pr <= PY_PR)
+				carPay(plaza[i]);
+			else if (pr <= PY_PR + JN_PR)
+				carJoin(plaza[i]);
+			else
+				carSwitch(plaza, i);
+		}
+		dispPlaza(plaza);
+		cout << endl;
 	}
 
 	return 0;
 }
 
 void carJoin(deque<Car> &q) {
-	cout << "Operation: Joined lane: ";
+	cout << "Operation: Joined: ";
 	Car temp;
 	temp.print();
 	q.push_back(temp);
@@ -61,13 +73,13 @@ void carJoin(deque<Car> &q) {
 }
 
 void carPay(deque<Car> &q) {
-	cout << "Operation: Car paid: ";
+	cout << "Operation: Paid: ";
 	q.front().print();
 	q.pop_front();
 }
 
 void carSwitch(array<deque<Car>, LANES> &a, int i) {
-	cout << "Operation: Car switched: ";
+	cout << "Operation: Switched: ";
 	a[i].back().print();
 	a[laneNot(i)].push_back(a[i].back());
 	a[i].pop_back();
