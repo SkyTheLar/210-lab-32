@@ -17,8 +17,9 @@ void carJoin(deque<Car>&);
 void carPay(deque<Car>&);
 void carSwitch(array<deque<Car>, LANES>&, int);
 void dispQueue(deque<Car>);
+void dispPlaza(array<deque<Car>, LANES>);
 int prob();
-
+int laneNot(int);
 
 int main(){
 	srand(time(0));
@@ -43,6 +44,10 @@ int main(){
 	}
 	cout << endl;
 
+	carSwitch(plaza, 3);
+
+	dispPlaza(plaza);
+
 	return 0;
 }
 
@@ -61,7 +66,8 @@ void carPay(deque<Car> &q) {
 }
 
 void carSwitch(array<deque<Car>, LANES> &a, int i) {
-
+	cout << "Operation: Car switched: ";
+	a[i - 1].back().print();
 }
 
 void dispQueue(deque<Car> q) {
@@ -77,6 +83,23 @@ void dispQueue(deque<Car> q) {
 	}
 }
 
+void dispPlaza(array<deque<Car>, LANES> a) {
+	for (int i = 0; i < LANES; i++) {
+		cout << "Lane " << i + 1 << " Queue:\n";
+		for (Car c : a[i]) {
+			cout << "\t";
+			c.print();
+		}
+	}
+}
+
 int prob() {
 	return (rand() % 100) + 1;
+}
+
+int laneNot(int l) {
+	int temp = (rand() % LANES) + 1;
+	while (temp = l)
+		temp = (rand() % LANES) + 1;
+	return temp;
 }
