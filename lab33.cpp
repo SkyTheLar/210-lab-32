@@ -11,7 +11,7 @@ COMSC 210 | Lab 32 | Skylar Robinson | IDE Used: Eclipse
 #include "Car.h"
 using namespace std;
 
-const int PY_PR = 46, JN_PR = 39, JNEM_PR = 50, ICARS = 2, LANES = 4, TIMES = 20;
+const int PY_PR = 46, JN_PR = 39, JNEM_PR = 50, MAX_ICARS = 3, LANES = 4, TIMES = 20;
 
 void carJoin(deque<Car>&);
 void carPay(deque<Car>&);
@@ -27,7 +27,7 @@ int main(){
 
 	//add initial cars
 	for (int c = 0; c < LANES; c++) {
-		for (int i = 0; i < ICARS; i++) {
+		for (int i = 0; i < (rand() % MAX_ICARS) + 1; i++) {
 			Car temp;
 			plaza[c].push_back(temp);
 		}
@@ -47,15 +47,23 @@ int main(){
 	//simulation
 	for (int c = 0; c < TIMES; c++) {
 		cout << "Time: " << c + 1 << endl;
-		for (int i = 0; i < LANES && !plaza[i].empty(); i++) {
+		for (int i = 0; i < LANES; i++) {
 			cout << "Lane: " << i + 1 << " ";
 			int pr = prob();
-			if (pr <= PY_PR)
-				carPay(plaza[i]);
-			else if (pr <= PY_PR + JN_PR)
-				carJoin(plaza[i]);
-			else
-				carSwitch(plaza, i);
+			if (plaza[i].empty()) {
+				if (pr <= JNEM_PR)
+					carJoin(plaza[i]);
+				else
+					cout << "No Operation\n";
+			}
+			else {
+				if (pr <= PY_PR)
+					carPay(plaza[i]);
+				else if (pr <= PY_PR + JN_PR)
+					carJoin(plaza[i]);
+				else
+					carSwitch(plaza, i);
+			}
 		}
 		dispPlaza(plaza);
 		cout << endl;
